@@ -1,8 +1,5 @@
-//--------------------------------------¡¾³ÌĞòËµÃ÷¡¿-------------------------------------------
-//		³ÌĞòÃèÊö£ºWinpcapµÄ×¥°üÓë»¹Ô­
-//		¿ª·¢²âÊÔËùÓÃ²Ù×÷ÏµÍ³£º Windows 8.1 64bit
-//		¿ª·¢²âÊÔËùÓÃIDE°æ±¾£ºVisual Studio 2015
-//		2015Äê11ÔÂ28ÈÕ Created by @CodeLadyJJY
+//
+//		2022å¹´10æœˆ5æ—¥ 
 //------------------------------------------------------------------------------------------------
 
 
@@ -18,14 +15,14 @@
 
 FILE *file = 0;
 
-// ÒÔÌ«ÍøĞ­Òé¸ñÊ½µÄ¶¨Òå
+// ä»¥å¤ªç½‘åè®®æ ¼å¼çš„å®šä¹‰
 typedef struct ether_header {
-	u_char ether_dhost[6];		// Ä¿±êMACµØÖ·
-	u_char ether_shost[6];		// Ô´MACµØÖ·
-	u_short ether_type;			// ÒÔÌ«ÍøÀàĞÍ
+	u_char ether_dhost[6];		// ç›®æ ‡MACåœ°å€
+	u_char ether_shost[6];		// æºMACåœ°å€
+	u_short ether_type;			// ä»¥å¤ªç½‘ç±»å‹
 }ether_header;
 
-// ÓÃ»§±£´æ4×Ö½ÚµÄIPµØÖ·
+// ç”¨æˆ·ä¿å­˜4å­—èŠ‚çš„IPåœ°å€
 typedef struct ip_address {
 	u_char byte1;
 	u_char byte2;
@@ -33,74 +30,74 @@ typedef struct ip_address {
 	u_char byte4;
 }ip_address;
 
-// ÓÃÓÚ±£´æIPV4µÄÊ×²¿
+// ç”¨äºä¿å­˜IPV4çš„é¦–éƒ¨
 typedef struct ip_header {
-	u_char version_hlen;		// Ê×²¿³¤¶È °æ±¾
-	u_char tos;					// ·şÎñÖÊÁ¿
-	u_short tlen;				// ×Ü³¤¶È
-	u_short identification;		// Éí·İÊ¶±ğ
-	u_short flags_offset;		// ±êÊ¶ ·Ö×éÆ«ÒÆ
-	u_char ttl;					// ÉúÃüÖÜÆÚ
-	u_char proto;				// Ğ­ÒéÀàĞÍ
-	u_short checksum;			// °üÍ·²âÑéÂë
-	u_int saddr;				// Ô´IPµØÖ·
-	u_int daddr;				// Ä¿µÄIPµØÖ·
+	u_char version_hlen;		// é¦–éƒ¨é•¿åº¦ ç‰ˆæœ¬
+	u_char tos;					// æœåŠ¡è´¨é‡
+	u_short tlen;				// æ€»é•¿åº¦
+	u_short identification;		// èº«ä»½è¯†åˆ«
+	u_short flags_offset;		// æ ‡è¯† åˆ†ç»„åç§»
+	u_char ttl;					// ç”Ÿå‘½å‘¨æœŸ
+	u_char proto;				// åè®®ç±»å‹
+	u_short checksum;			// åŒ…å¤´æµ‹éªŒç 
+	u_int saddr;				// æºIPåœ°å€
+	u_int daddr;				// ç›®çš„IPåœ°å€
 }ip_header;
 
-// ÓÃÓÚ±£´æTCPÊ×²¿
+// ç”¨äºä¿å­˜TCPé¦–éƒ¨
 typedef struct tcp_header {
 	u_short sport;
 	u_short dport;
-	u_int sequence;				// ĞòÁĞÂë
-	u_int ack;					// »Ø¸´Âë
-	u_char hdrLen;				// Ê×²¿³¤¶È±£Áô×Ö
-	u_char flags;				// ±êÖ¾
-	u_short windows;			// ´°¿Ú´óĞ¡
-	u_short checksum;			// Ğ£ÑéºÍ
-	u_short urgent_pointer;		// ½ô¼±Ö¸Õë
+	u_int sequence;				// åºåˆ—ç 
+	u_int ack;					// å›å¤ç 
+	u_char hdrLen;				// é¦–éƒ¨é•¿åº¦ä¿ç•™å­—
+	u_char flags;				// æ ‡å¿—
+	u_short windows;			// çª—å£å¤§å°
+	u_short checksum;			// æ ¡éªŒå’Œ
+	u_short urgent_pointer;		// ç´§æ€¥æŒ‡é’ˆ
 }tcp_header;
 
-// ÓÃÓÚ±£´æUDPµÄÊ×²¿
+// ç”¨äºä¿å­˜UDPçš„é¦–éƒ¨
 typedef struct udp_header {
-	u_short sport;				// Ô´¶Ë¿Ú
-	u_short dport;				// Ä¿±ê¶Ë¿Ú
-	u_short datalen;			// UDPÊı¾İ³¤¶È
-	u_short checksum;			// Ğ£ÑéºÍ
+	u_short sport;				// æºç«¯å£
+	u_short dport;				// ç›®æ ‡ç«¯å£
+	u_short datalen;			// UDPæ•°æ®é•¿åº¦
+	u_short checksum;			// æ ¡éªŒå’Œ
 }udp_header;
 
-// ÓÃÓÚ±£´æICMPµÄÊ×²¿
+// ç”¨äºä¿å­˜ICMPçš„é¦–éƒ¨
 typedef struct icmp_header {
-	u_char type;				// ICMPÀàĞÍ
-	u_char code;				// ´úÂë
-	u_short checksum;			// Ğ£ÑéºÍ
-	u_short identification;		// ±êÊ¶
-	u_short sequence;			// ĞòÁĞºÅ
-	u_long timestamp;			// Ê±¼ä´Á
+	u_char type;				// ICMPç±»å‹
+	u_char code;				// ä»£ç 
+	u_short checksum;			// æ ¡éªŒå’Œ
+	u_short identification;		// æ ‡è¯†
+	u_short sequence;			// åºåˆ—å·
+	u_long timestamp;			// æ—¶é—´æˆ³
 }icmp_header;
 
-// ÓÃÓÚ±£´æARPµÄÊ×²¿
+// ç”¨äºä¿å­˜ARPçš„é¦–éƒ¨
 typedef struct arp_header {
-	u_short hardware_type;					// ¸ñÊ½»¯µÄÓ²¼şµØÖ·
-	u_short protocol_type;					// Ğ­ÒéµØÖ·¸ñÊ½
-	u_char hardware_length;					// Ó²¼şµØÖ·³¤¶È
-	u_char protocol_length;					// Ğ­ÒéµØÖ·³¤¶È
-	u_short operation_code;					// ²Ù×÷Âë
-	u_char source_ethernet_address[6];		// ·¢ËÍÕßÓ²¼şµØÖ·
-	u_char source_ip_address[4];			// ·¢ËÍÕßĞ­ÒéµØÖ·
-	u_char destination_ethernet_address[6];	// Ä¿µÄ·½Ó²¼şµØÖ·
-	u_char destination_ip_address[4];		// Ä¿µÄ·½Ğ­ÒéµØÖ·
+	u_short hardware_type;					// æ ¼å¼åŒ–çš„ç¡¬ä»¶åœ°å€
+	u_short protocol_type;					// åè®®åœ°å€æ ¼å¼
+	u_char hardware_length;					// ç¡¬ä»¶åœ°å€é•¿åº¦
+	u_char protocol_length;					// åè®®åœ°å€é•¿åº¦
+	u_short operation_code;					// æ“ä½œç 
+	u_char source_ethernet_address[6];		// å‘é€è€…ç¡¬ä»¶åœ°å€
+	u_char source_ip_address[4];			// å‘é€è€…åè®®åœ°å€
+	u_char destination_ethernet_address[6];	// ç›®çš„æ–¹ç¡¬ä»¶åœ°å€
+	u_char destination_ip_address[4];		// ç›®çš„æ–¹åè®®åœ°å€
 }arp_header;
 
-// TCPĞ­Òé´¦Àí
+// TCPåè®®å¤„ç†
 //u_short sport;
 //u_short dport;
-//u_int sequence;			// ĞòÁĞÂë
-//u_int ack;				// »Ø¸´Âë
-//u_char hdrLen;			// Ê×²¿³¤¶È±£Áô×Ö
-//u_char flags;				// ±êÖ¾
-//u_short windows;			// ´°¿Ú´óĞ¡
-//u_short checksum;			// Ğ£ÑéºÍ
-//u_short urgent_pointer;	// ½ô¼±Ö¸Õë
+//u_int sequence;			// åºåˆ—ç 
+//u_int ack;				// å›å¤ç 
+//u_char hdrLen;			// é¦–éƒ¨é•¿åº¦ä¿ç•™å­—
+//u_char flags;				// æ ‡å¿—
+//u_short windows;			// çª—å£å¤§å°
+//u_short checksum;			// æ ¡éªŒå’Œ
+//u_short urgent_pointer;	// ç´§æ€¥æŒ‡é’ˆ
 void tcp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header, const u_char *pkt_content)
 {
 	tcp_header *tcp_protocol;
@@ -127,11 +124,11 @@ void tcp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_heade
 	printf("Urgent Pointer: %i\n", ntohs(tcp_protocol->urgent_pointer));
 }
 
-// UDPĞ­Òé´¦Àí
-//u_short sport;			// Ô´¶Ë¿Ú
-//u_short dport;			// Ä¿±ê¶Ë¿Ú
-//u_short datalen;			// UDPÊı¾İ³¤¶È
-//u_short checksum;			// Ğ£ÑéºÍ
+// UDPåè®®å¤„ç†
+//u_short sport;			// æºç«¯å£
+//u_short dport;			// ç›®æ ‡ç«¯å£
+//u_short datalen;			// UDPæ•°æ®é•¿åº¦
+//u_short checksum;			// æ ¡éªŒå’Œ
 void udp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header, const u_char *pkt_content)
 {
 	udp_header *udp_protocol;
@@ -145,13 +142,13 @@ void udp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_heade
 	printf("Checksum: 0x%.4x\n", ntohs(udp_protocol->checksum));
 }
 
-// ICMPĞ­Òé´¦Àí
-//u_char type;				// ICMPÀàĞÍ
-//u_char code;				// ´úÂë
-//u_short checksum;			// Ğ£ÑéºÍ
-//u_short identification;	// ±êÊ¶
-//u_short sequence;			// ĞòÁĞºÅ
-//u_long timestamp;			// Ê±¼ä´Á
+// ICMPåè®®å¤„ç†
+//u_char type;				// ICMPç±»å‹
+//u_char code;				// ä»£ç 
+//u_short checksum;			// æ ¡éªŒå’Œ
+//u_short identification;	// æ ‡è¯†
+//u_short sequence;			// åºåˆ—å·
+//u_long timestamp;			// æ—¶é—´æˆ³
 void icmp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header, const u_char *pkt_content)
 {
 	icmp_header *icmp_protocol;
@@ -178,16 +175,16 @@ void icmp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_head
 	printf("Sequence: 0x%.4x\n", ntohs(icmp_protocol->sequence));
 }
 
-// ARPĞ­Òé´¦Àí
-//u_short hardware_type;					// ¸ñÊ½»¯µÄÓ²¼şµØÖ·
-//u_short protocol_type;					// Ğ­ÒéµØÖ·¸ñÊ½
-//u_char hardware_length;					// Ó²¼şµØÖ·³¤¶È
-//u_char protocol_length;					// Ğ­ÒéµØÖ·³¤¶È
-//u_short operation_code;					// ²Ù×÷Âë
-//u_char source_ethernet_address[6];		// ·¢ËÍÕßÓ²¼şµØÖ·
-//u_char source_ip_address[4];				// ·¢ËÍÕßĞ­ÒéµØÖ·
-//u_char destination_ethernet_address[6];	// Ä¿µÄ·½Ó²¼şµØÖ·
-//u_char destination_ip_address[4];			// Ä¿µÄ·½Ğ­ÒéµØÖ·
+// ARPåè®®å¤„ç†
+//u_short hardware_type;					// æ ¼å¼åŒ–çš„ç¡¬ä»¶åœ°å€
+//u_short protocol_type;					// åè®®åœ°å€æ ¼å¼
+//u_char hardware_length;					// ç¡¬ä»¶åœ°å€é•¿åº¦
+//u_char protocol_length;					// åè®®åœ°å€é•¿åº¦
+//u_short operation_code;					// æ“ä½œç 
+//u_char source_ethernet_address[6];		// å‘é€è€…ç¡¬ä»¶åœ°å€
+//u_char source_ip_address[4];				// å‘é€è€…åè®®åœ°å€
+//u_char destination_ethernet_address[6];	// ç›®çš„æ–¹ç¡¬ä»¶åœ°å€
+//u_char destination_ip_address[4];			// ç›®çš„æ–¹åè®®åœ°å€
 void arp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header, const u_char *pkt_content)
 {
 	arp_header *arp_protocol;
@@ -239,17 +236,17 @@ void arp_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_heade
 	printf(" (%i)\n", ntohs(arp_protocol->operation_code));
 }
 
-// IPĞ­Òé´¦Àí
-//u_char version_hlen;		// Ê×²¿³¤¶È °æ±¾
-//u_char tos;				// ·şÎñÖÊÁ¿
-//u_short tlen;				// ×Ü³¤¶È
-//u_short identification;	// Éí·İÊ¶±ğ
-//u_short flags_offset;		// ±êÊ¶ ·Ö×éÆ«ÒÆ
-//u_char ttl;				// ÉúÃüÖÜÆÚ
-//u_char proto;				// Ğ­ÒéÀàĞÍ
-//u_short checksum;			// °üÍ·²âÑéÂë
-//u_int saddr;				// Ô´IPµØÖ·
-//u_int daddr;				// Ä¿µÄIPµØÖ·
+// IPåè®®å¤„ç†
+//u_char version_hlen;		// é¦–éƒ¨é•¿åº¦ ç‰ˆæœ¬
+//u_char tos;				// æœåŠ¡è´¨é‡
+//u_short tlen;				// æ€»é•¿åº¦
+//u_short identification;	// èº«ä»½è¯†åˆ«
+//u_short flags_offset;		// æ ‡è¯† åˆ†ç»„åç§»
+//u_char ttl;				// ç”Ÿå‘½å‘¨æœŸ
+//u_char proto;				// åè®®ç±»å‹
+//u_short checksum;			// åŒ…å¤´æµ‹éªŒç 
+//u_int saddr;				// æºIPåœ°å€
+//u_int daddr;				// ç›®çš„IPåœ°å€
 void ip_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header, const u_char *pkt_content)
 {
 	ip_header *ip_protocol;
@@ -302,20 +299,20 @@ void ip_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header
 		icmp_protocol_packet_handle(arg, pkt_header, pkt_content);
 }
 
-// EthernetĞ­Òé´¦Àí
+// Ethernetåè®®å¤„ç†
 void ethernet_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_header, const u_char *pkt_content)
 {
-	ether_header *ethernet_protocol;//ÒÔÌ«ÍøĞ­Òé
-	u_short ethernet_type;			//ÒÔÌ«ÍøÀàĞÍ
-	u_char *mac_string;				//ÒÔÌ«ÍøµØÖ·
+	ether_header *ethernet_protocol;//ä»¥å¤ªç½‘åè®®
+	u_short ethernet_type;			//ä»¥å¤ªç½‘ç±»å‹
+	u_char *mac_string;				//ä»¥å¤ªç½‘åœ°å€
 
-									//»ñÈ¡ÒÔÌ«ÍøÊı¾İÄÚÈİ
+									//è·å–ä»¥å¤ªç½‘æ•°æ®å†…å®¹
 	ethernet_protocol = (ether_header*)pkt_content;
 	ethernet_type = ntohs(ethernet_protocol->ether_type);
 
 	printf("==============Ethernet Protocol=================\n");
 
-	//ÒÔÌ«ÍøÄ¿±êµØÖ·
+	//ä»¥å¤ªç½‘ç›®æ ‡åœ°å€
 	mac_string = ethernet_protocol->ether_dhost;
 
 	printf("Destination Mac Address: %02x:%02x:%02x:%02x:%02x:%02x\n",
@@ -326,7 +323,7 @@ void ethernet_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_
 		*(mac_string + 4),
 		*(mac_string + 5));
 
-	//ÒÔÌ«ÍøÔ´µØÖ·
+	//ä»¥å¤ªç½‘æºåœ°å€
 	mac_string = ethernet_protocol->ether_shost;
 
 	printf("Source Mac Address: %02x:%02x:%02x:%02x:%02x:%02x\n",
@@ -376,8 +373,8 @@ void ethernet_protocol_packet_handle(u_char *arg, const struct pcap_pkthdr *pkt_
 
 int main()
 {
-	pcap_if_t *alldevs;	//ÊÊÅäÆ÷ÁĞ±í£¬ËüÊÇÒ»¸öÁ´±íµÄÊı¾İ½á¹¹
-	pcap_if_t *d;		//±£´æÄ³¸öÊÊÅäÆ÷
+	pcap_if_t *alldevs;	//é€‚é…å™¨åˆ—è¡¨ï¼Œå®ƒæ˜¯ä¸€ä¸ªé“¾è¡¨çš„æ•°æ®ç»“æ„
+	pcap_if_t *d;		//ä¿å­˜æŸä¸ªé€‚é…å™¨
 	pcap_t *fp;
 	int res;
 	struct pcap_pkthdr *header;
@@ -392,14 +389,14 @@ int main()
 
 	printf("===============Adapter List===============\n");
 
-	//»ñÈ¡±¾µØÉè±¸ÁĞ±í
+	//è·å–æœ¬åœ°è®¾å¤‡åˆ—è¡¨
 	if (pcap_findalldevs(&alldevs, errbuf) == -1)
 	{
 		fprintf(stderr, "Error in pcap_findalldevs: %s\n", errbuf);
 		exit(1);
 	}
 
-	//Êä³öÁĞ±í
+	//è¾“å‡ºåˆ—è¡¨
 	for (d = alldevs; d != NULL; d = d->next)
 	{
 		printf("%d. %s", ++i, d->name);
@@ -415,7 +412,7 @@ int main()
 		return -1;
 	}
 
-	//»ñÈ¡Ñ¡Ôñ±àºÅ
+	//è·å–é€‰æ‹©ç¼–å·
 	while (1)
 	{
 		printf("\nEnter the interface number (1-%d): ", i);
@@ -425,10 +422,10 @@ int main()
 			break;
 	}
 
-	//Ìøµ½ÓÃ»§Ñ¡ÔñµÄÊÊÅäÆ÷
+	//è·³åˆ°ç”¨æˆ·é€‰æ‹©çš„é€‚é…å™¨
 	for (d = alldevs, i = 0; i < inum - 1; ++i, d = d->next);
 
-	//´ò¿ªÊÊÅäÆ÷
+	//æ‰“å¼€é€‚é…å™¨
 	if ((fp = pcap_open_live(d->name, 65536, 1, 1000, errbuf)) == NULL)
 	{
 		fprintf(stderr, "\nError openning adapter: %s\n", errbuf);
@@ -436,7 +433,7 @@ int main()
 		return -1;
 	}
 
-	//¼ì²éÁ´Â·²ãµÄÀàĞÍ
+	//æ£€æŸ¥é“¾è·¯å±‚çš„ç±»å‹
 	if (pcap_datalink(fp) != DLT_EN10MB)
 	{
 		fprintf(stderr, "This program only run on Ethernet networks\n");
@@ -454,22 +451,22 @@ int main()
 
 	while ((res = pcap_next_ex(fp, &header, &pkt_data)) >= 0)
 	{
-		//³¬Ê±
+		//è¶…æ—¶
 		if (res == 0)
 			continue;
 
-		//½«Ê±¼ä´Á×ª»¯Îª¿ÉÊ¶±ğ¸ñÊ½
+		//å°†æ—¶é—´æˆ³è½¬åŒ–ä¸ºå¯è¯†åˆ«æ ¼å¼
 		local_tv_sec = header->ts.tv_sec;
 		ltime = localtime(&local_tv_sec);
 		strftime(timestr, sizeof(timestr), "%H:%M:%S", ltime);
 
-		//Êä³ö±àºÅ¡¢Ê±¼ä´ÁºÍ°ü³¤¶È
+		//è¾“å‡ºç¼–å·ã€æ—¶é—´æˆ³å’ŒåŒ…é•¿åº¦
 		printf("==============================================================================\n");
 		printf("No.%d\ttime: %s\tlen: %ld\n", count++, timestr, header->len);
 		printf("==============================================================================\n");
 
 		char temp[LINE_LEN + 1];
-		//Êä³ö°ü
+		//è¾“å‡ºåŒ…
 		for (i = 0; i < header->caplen; ++i)
 		{
 			printf("%.2x ", pkt_data[i]);
@@ -489,7 +486,7 @@ int main()
 		}
 		printf("\n");
 
-		//·ÖÎöÊı¾İ°ü
+		//åˆ†ææ•°æ®åŒ…
 		ethernet_protocol_packet_handle(NULL, header, pkt_data);
 	}
 
@@ -504,7 +501,7 @@ int main()
 		return -1;
 	}
 
-	//ÊÍ·Å
+	//é‡Šæ”¾
 	pcap_close(fp);
 	pcap_freealldevs(alldevs);
 	fclose(stdin);
